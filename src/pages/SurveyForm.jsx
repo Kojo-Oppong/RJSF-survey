@@ -5,7 +5,7 @@ import validator from "@rjsf/validator-ajv8";
 
 // Define your sections separately
 const sections = [
-   
+
     {
         key: "1_CustomerSegments",
         title: "1. Customer Segments",
@@ -17,7 +17,7 @@ const sections = [
                     title: "Did you arrive at your customer segment through research?",
                     enum: ["Yes", "No"],
                 },
-                q1_impact: { type: "number", title: "Impact (1-10)" },
+                q1_impact: { type: "number", title: "Impact (1-10)", minimum: 1, maximum: 10 },
                 q1_reason: { type: "string", title: "Please give reasons for your response particularly where your response is 'No'", },
 
                 q2: {
@@ -25,7 +25,7 @@ const sections = [
                     title: "Do you have a mechanism for continually researching your customers? (Surveys,NPS, Usage data, Website and social media analytics)",
                     enum: ["Yes", "No"],
                 },
-                q2_impact: { type: "number", title: "Impact (1-10)" },
+                q2_impact: { type: "number", title: "Impact (1-10)", minimum: 1, maximum: 10 },
                 q2_reason: { type: "string", title: "Please give reasons for your response particularly where your response is 'No'" },
                 q3: {
                     type: "string",
@@ -529,7 +529,7 @@ const sections = [
                     enum: ["Yes", "No"]
                 },
                 q10_impact: { type: "number", title: "Impact (1-10)" },
-                q10_reason: { type: "string", title: "Please give reasons for your response particularly where your response is 'No'"}
+                q10_reason: { type: "string", title: "Please give reasons for your response particularly where your response is 'No'" }
             },
         },
         uiSchema: {
@@ -545,7 +545,7 @@ const sections = [
             q10_reason: { "ui:widget": "textarea" },
         },
     },
-   
+
 ];
 
 export default function BusinessSurveyForm() {
@@ -565,7 +565,7 @@ export default function BusinessSurveyForm() {
     };
 
     const handleSubmit = () => {
-        console.log("Final form data:", formData);
+        console.log(JSON.stringify(formData));
         alert("Survey submitted! Check console for data.");
     };
 
@@ -600,5 +600,6 @@ export default function BusinessSurveyForm() {
                 </Form>
             </div>
         </div>
+        
     );
 }
