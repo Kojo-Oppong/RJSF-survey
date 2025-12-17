@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import Form from "@rjsf/mui";
+import Form from "@rjsf/shadcn";
 import validator from "@rjsf/validator-ajv8";
-
 
 // Define your sections separately
 const sections = [
@@ -556,23 +555,24 @@ export default function BusinessSurveyForm() {
     const step = sections[currentStep];
 
     const handleNext = (data) => {
-        setFormData({ ...formData, [step.key]: data.formData });
-        setCurrentStep((prev) => Math.min(prev + 1, sections.length - 1), scrollTo(0, 0));
+        console.log("Current step schema:", data.schema);
+        setFormData({ ...formData, [step.key]: data.formData }); // Save current step data
+        setCurrentStep(prev => prev + 1);
     };
 
     const handleBack = () => {
         setCurrentStep((prev) => Math.max(prev - 1, 0), scrollTo(0, 0));
     };
 
-    const handleSubmit = () => {
-        console.log(JSON.stringify(formData));
-        alert("Survey submitted! Check console for data.");
+    const handleSubmit = (data) => {
+        console.log("Final step schema:", data.schema);
+        console.log("All section schemas:", sections);
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
-            <div className="bg-white text-black p-4 rounded-xl shadow-lg w-full max-w-4xl">
-                <h2 className="text-xl font-bold mb-2">{step.title}</h2>
+        <div className="">
+            <div className="">
+                <h2 className="">{step.title}</h2>
                 <Form
                     schema={step.schema}
                     uiSchema={step.uiSchema}
@@ -600,6 +600,6 @@ export default function BusinessSurveyForm() {
                 </Form>
             </div>
         </div>
-        
+
     );
 }
