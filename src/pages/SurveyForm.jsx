@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import Form from "@rjsf/shadcn";
 import validator from "@rjsf/validator-ajv8";
 
+
+
+
 // Define your sections separately
 const sections = [
 
@@ -553,9 +556,11 @@ export default function BusinessSurveyForm() {
     const [formData, setFormData] = useState({}); // Store all responses
 
     const step = sections[currentStep];
+    const totalSteps = sections.length;
+    const progressPercent = Math.round(((currentStep + 1) / totalSteps) * 100);
 
     const handleNext = (data) => {
-        console.log("Current step schema:", data.schema);
+        // console.log("Current step schema:", data.schema);
         setFormData({ ...formData, [step.key]: data.formData }); // Save current step data
         setCurrentStep(prev => prev + 1);
     };
@@ -565,34 +570,54 @@ export default function BusinessSurveyForm() {
     };
 
     const handleSubmit = (data) => {
-        console.log("Final step schema:", data.schema);
-        console.log("All section schemas:", sections);
+       console.log(JSON.stringify(data.schema));
+       console.log('uiSchema:', JSON.stringify(data.uiSchema));
+       console.log('Data:', formData)
+       alert('Form Submitted Successfully')
+        // console.log("All section schemas:", sections);
+        
+        
     };
 
     return (
         <div className="">
-            <div className="">
-                <h2 className="">{step.title}</h2>
+            <div className="mx-auto max-w-2xl bg-background border border-border rounded-xl shadow-sm p-8 mt-10">
+                <div>
+                    <div className="flex items-center justify-between mb-2">
+                        <h2 className="text-2xl font-semibold text-foreground tracking-tight">{step.title}</h2>
+                    </div>
+
+                    <div className="flex items-center justify-between mb-4">
+                        <div className="text-sm text-muted-foreground">Step {currentStep + 1} of {totalSteps}</div>
+                        <div className="text-xs text-muted-foreground">{progressPercent}%</div>
+                    </div>
+
+                    <div className="w-full h-2 bg-muted rounded mb-6">
+                        <div className="h-2 bg-primary rounded transition-all duration-300" style={{ width: `${progressPercent}%` }} />
+                    </div>
+                </div>
+
                 <Form
+                    className="space-y-6 w-full"
                     schema={step.schema}
                     uiSchema={step.uiSchema}
                     validator={validator}
                     formData={formData[step.key] || {}}
                     onSubmit={currentStep === sections.length - 1 ? handleSubmit : handleNext}
                 >
-                    <div className="flex justify-between mt-4">
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center mt-6 gap-2 w-full">
                         {currentStep > 0 && (
                             <button
                                 type="button"
                                 onClick={handleBack}
-                                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+                                className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium bg-muted text-foreground rounded-md border border-border shadow-sm hover:bg-accent focus:outline-none focus:ring-2 focus:ring-primary/50 w-full sm:w-auto"
                             >
                                 Previous
                             </button>
                         )}
                         <button
                             type="submit"
-                            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 ml-auto"
+                            className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md shadow hover:bg-primary focus:outline-none focus:ring-2 focus:ring-primary/50 w-full sm:w-auto ml-auto"
                         >
                             {currentStep === sections.length - 1 ? "Submit" : "Next"}
                         </button>
