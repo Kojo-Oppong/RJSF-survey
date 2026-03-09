@@ -561,7 +561,7 @@ export default function BusinessSurveyForm() {
 
     const handleNext = (data) => {
         // console.log("Current step schema:", data.schema);
-        setFormData({ ...formData, [step.key]: data.formData }); // Save current step data
+        setFormData(prevFormData => ({ ...prevFormData, [step.key]: data.formData })); // Save current step data
         setCurrentStep(prev => prev + 1);
     };
 
@@ -570,13 +570,19 @@ export default function BusinessSurveyForm() {
     };
 
     const handleSubmit = (data) => {
-       console.log(JSON.stringify(data.schema));
-       console.log('uiSchema:', JSON.stringify(data.uiSchema));
-       console.log('Data:', formData)
-       alert('Form Submitted Successfully')
-        // console.log("All section schemas:", sections);
-        
-        
+        const completeFormData = { ...formData, [step.key]: data.formData };
+        // log current step schema as before
+        console.log(JSON.stringify(data.schema));
+        console.log('uiSchema:', JSON.stringify(data.uiSchema));
+        // log accumulated form data
+        console.log('Data:', completeFormData);
+        // additionally log every section schema/uischema so you can inspect them all
+        sections.forEach((s) => {
+            console.log(`section ${s.key} schema:`, JSON.stringify(s.schema));
+            console.log(`section ${s.key} uiSchema:`, JSON.stringify(s.uiSchema));
+        });
+
+        alert('Form Submitted Successfully');
     };
 
     return (
